@@ -703,7 +703,7 @@
               <p class="panel-kicker">File upload</p>
             </div>
 
-            <input class="sr-only" id="fileInput" type="file" accept=".txt,.mp3,.mp4,.doc,.docx,.pdf">
+            <input class="sr-only" id="fileInput" type="file" accept=".txt,.mp3,.mp4,.pdf">
             <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-disabled="false" aria-describedby="uploadError">
               <div class="dropzone-content">
                 <span class="upload-mark" aria-hidden="true">
@@ -713,8 +713,8 @@
                     <path d="M7 24.5h18"></path>
                   </svg>
                 </span>
-                <p class="drop-title">Drop transcript, audio, video, or document file</p>
-                <p class="drop-subtitle">or browse for a .txt, .mp3, .mp4, .doc, .docx, or .pdf file</p>
+                <p class="drop-title">Drop transcript, audio, video, or PDF file</p>
+                <p class="drop-subtitle">or browse for a .txt, .mp3, .mp4, or .pdf file</p>
                 <div class="selected-file" id="selectedFile">
                   <strong id="fileName"></strong>
                   <span class="file-meta" id="fileSize"></span>
@@ -802,7 +802,7 @@
       const POLL_INTERVAL_MS = 10000;
       const TEXT_FIELD_POLL_INTERVAL_MS = 3000;
       const MAX_POLL_ATTEMPTS = 120;
-      const ALLOWED_FILE_TYPES = ["txt", "mp3", "mp4", "doc", "docx", "pdf"];
+      const ALLOWED_FILE_TYPES = ["txt", "mp3", "mp4", "pdf"];
       const FALLBACK_UPLOAD_BASENAME = "upload";
       const REPORT_FILENAME_PREFIX = "axios-fact-check-";
       const DEFAULT_REPORT_NAME = "axios-fact-check-report.html";
@@ -911,13 +911,13 @@
         clearUploadError();
 
         if (!file) {
-          showUploadError("Choose a .txt, .mp3, .mp4, .doc, .docx, or .pdf file before running the fact-check.");
+          showUploadError("Choose a .txt, .mp3, .mp4, or .pdf file before running the fact-check.");
           updateFileUi();
           return;
         }
 
         if (!getAllowedFileType(file)) {
-          showUploadError("That file type is not supported. Please choose a .txt, .mp3, .mp4, .doc, .docx, or .pdf file.");
+          showUploadError("That file type is not supported. Please choose a .txt, .mp3, .mp4, or .pdf file.");
           els.fileInput.value = "";
           state.file = null;
           updateFileUi();
@@ -1028,13 +1028,13 @@
           return;
         }
 
-        showUploadError("Choose a .txt, .mp3, .mp4, .doc, .docx, or .pdf file or enter a valid article URL before running the fact-check.");
+        showUploadError("Choose a .txt, .mp3, .mp4, or .pdf file or enter a valid article URL before running the fact-check.");
       }
 
       async function submitFileJob() {
         const fileType = getAllowedFileType(state.file);
         if (!fileType) {
-          showUploadError("That file type is not supported. Please choose a .txt, .mp3, .mp4, .doc, .docx, or .pdf file.");
+          showUploadError("That file type is not supported. Please choose a .txt, .mp3, .mp4, or .pdf file.");
           return;
         }
 
