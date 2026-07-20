@@ -800,9 +800,11 @@
       const POLL_URL = "https://n8n.automail-ai.com/webhook/axios-fact-check-polling";
       const INITIAL_POLL_DELAY_MS = 10000;
       const POLL_INTERVAL_MS = 20000;
+      const AUDIO_VIDEO_POLL_INTERVAL_MS = 30000;
       const TEXT_FIELD_POLL_INTERVAL_MS = 3000;
       const MAX_POLL_ATTEMPTS = 120;
       const ALLOWED_FILE_TYPES = ["txt", "mp3", "mp4", "pdf", "doc", "docx"];
+      const AUDIO_VIDEO_FILE_TYPES = ["mp3", "mp4"];
       const FALLBACK_UPLOAD_BASENAME = "upload";
       const REPORT_FILENAME_PREFIX = "axios-fact-check-";
       const DEFAULT_REPORT_NAME = "axios-fact-check-report.html";
@@ -846,6 +848,7 @@
         pollTimer: null,
         elapsedTimer: null,
         submissionType: "",
+        fileType: "",
         startedAt: 0,
         reportUrl: "",
         reportHtml: "",
@@ -1045,6 +1048,7 @@
 
         prepareForNewRun();
         state.submissionType = "file";
+        state.fileType = fileType;
         setMode("submitting");
         showStatus("SUBMITTING...", "Uploading file to the fact-check queue.", false);
         startElapsedTimer();
@@ -1114,8 +1118,12 @@
       }
 
       function getPollIntervalMs() {
-        return state.submissionType === "text_field"
-          ? TEXT_FIELD_POLL_INTERVAL_MS
+        if (state.submissionType === "text_field") {
+          return TEXT_FIELD_POLL_INTERVAL_MS;
+        }
+
+        return AUDIO_VIDEO_FILE_TYPES.includes(state.fileType)
+          ? AUDIO_VIDEO_POLL_INTERVAL_MS
           : POLL_INTERVAL_MS;
       }
 
@@ -1771,6 +1779,7 @@
         stopTimers();
         state.jobId = "";
         state.pollAttempts = 0;
+        state.fileType = "";
         state.startedAt = 0;
         state.reportHtml = "";
         state.downloadName = DEFAULT_REPORT_NAME;
@@ -1799,6 +1808,7 @@
         state.mode = "idle";
         state.pollAttempts = 0;
         state.submissionType = "";
+        state.fileType = "";
         state.startedAt = 0;
         state.reportUrl = "";
         state.reportHtml = "";
